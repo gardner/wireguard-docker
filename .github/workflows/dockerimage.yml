@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        echo "$DOCKER_PASSWORD" | docker login --username ${{ github.actor }} --password-stdin
+        docker build . --file Dockerfile --tag ${{ github.actor }}/wireguard:latest
+        docker push ${{ github.actor }}/wireguard
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
