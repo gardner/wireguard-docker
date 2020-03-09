@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ buster ]
 
 jobs:
 
@@ -15,7 +15,7 @@ jobs:
     - name: Build the Docker image
       run: |
         echo "$DOCKER_PASSWORD" | docker login --username ${{ github.actor }} --password-stdin
-        docker build . --file Dockerfile --tag ${{ github.actor }}/wireguard:latest
+        docker build . --file Dockerfile --tag ${{ github.actor }}/wireguard:latest --tag ${{ github.actor }}/wireguard:buster
         docker push ${{ github.actor }}/wireguard
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
